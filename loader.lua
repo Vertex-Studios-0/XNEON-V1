@@ -1,3 +1,27 @@
+local player = game:GetService("Players").LocalPlayer
+
+-- ⚙️ CONFIGURATION: Paste your Raw status.txt URL here
+local statusUrl = "https://raw.githubusercontent.com/Vertex-Studios-0/XNEON-V1/refs/heads/main/status.lua"
+
+-- 🌐 Download the status text securely
+local success, currentStatus = pcall(function()
+    return game:HttpGet(statusUrl)
+end)
+
+-- Clean up any extra spaces or line breaks from the web response
+if success and currentStatus then
+    currentStatus = string.gsub(currentStatus, "%s+", "")
+end
+
+-- 🛑 REMOTE KILL SWITCH: Kick player if status is anything other than ON
+if not success or currentStatus ~= "ON" then
+    player:Kick("\n\n[XNEON V1]\nThis script has been shutdown by Mngmt.")
+    return
+end
+
+-- =====================================================================
+-- 🚀 PASTE YOUR ENTIRE GAME SCRIPT (UI, FEATURES, CODE) DIRECTLY BELOW
+-- =====================================================================
 --[[
 	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
 ]]
