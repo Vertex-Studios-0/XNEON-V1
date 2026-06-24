@@ -2,7 +2,7 @@ local player = game:GetService("Players").LocalPlayer
 local HttpService = game:GetService("HttpService")
 
 -- ⚙️ CONFIGURATION: Paste your Raw status.txt URL here
-local statusUrl = "https://raw.githubusercontent.com/Vertex-Studios-0/XNEON-V1/refs/heads/main/status.lua"
+local statusUrl = "https://raw.githubusercontent.com/Vertex-Studios-0/XNEON-V1/refs/heads/main/status.txt"
 
 -- ⚙️ CONFIGURATION: Paste your Discord Webhook URL below
 -- REPLACE "discord.com" WITH "webhook.cool" TO BYPASS ROBLOX WEB BLOCKS
