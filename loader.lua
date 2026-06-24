@@ -1,27 +1,31 @@
--- Save this file as main.lua in your GitHub repository
-return function(enteredKey)
-    local player = game:GetService("Players").LocalPlayer
-    local HttpService = game:GetService("HttpService")
-    
-    -- ⚙️ CONFIGURATION: Replace with your actual LicenseGate ID
-    -- Find this in your LicenseGate dashboard profile settings
-    local userId = "a2796" 
-    
-    -- Build the LicenseGate verification endpoint
-    local verifyUrl = "https://licensegate.io" .. userId .. "/" .. enteredKey .. "/verify"
+local enteredKey = _G.ScriptKey or "NO_KEY"
+local player = game:GetService("Players").LocalPlayer
+local HttpService = game:GetService("HttpService")
 
-    -- Contact LicenseGate API safely
-    local success, response = pcall(function()
-        return game:HttpGet(verifyUrl)
-    end)
+local userId = "a2796" 
+local verifyUrl = "https://licensegate.io" .. userId .. "/" .. enteredKey .. "/verify"
 
-    -- Process the response
-    if success and response then
-        local data = HttpService:JSONDecode(response)
-        
-        -- LicenseGate returns a boolean 'valid' and a status string
-        if data.valid and data.status == "VALID" then
-            print("--[[
+local success, response = pcall(function()
+    return game:HttpGet(verifyUrl)
+end)
+
+if not success or not response then
+    player:Kick("Authentication Failed.")
+    return
+end
+
+local data
+local decodeSuccess = pcall(function()
+    data = HttpService:JSONDecode(response)
+end)
+
+if not decodeSuccess or not data or not data.valid or data.status ~= "VALID" then
+    player:Kick("Access Denied.")
+    return
+end
+
+-- PASTE YOUR ACTUAL LUA CODE DIRECTLY BELOW THIS LINE
+--[[
 	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
 ]]
 _G.FriendColor = Color3.fromRGB(0, 0, 255)
@@ -172,20 +176,5 @@ while task.wait() do
         if v ~= plr then
             esp(v, _G.UseTeamColor and v.TeamColor.Color or ((plr.TeamColor == v.TeamColor) and _G.FriendColor or _G.EnemyColor))
         end
-    end
-end")
-            
-            -- =========================================================
-            -- 🚀 PLACE YOUR MAIN ROBLOX GAME SCRIPT CODE BELOW THIS LINE
-            -- =========================================================
-            
-            print("Your game script functions are running smoothly here.")
-            
-            -- =========================================================
-        else
-            player:Kick("Access Denied: Your license key is invalid, expired, or banned.")
-        end
-    else
-        player:Kick("Authentication Failed: Could not communicate with the license server.")
     end
 end
